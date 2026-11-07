@@ -14,13 +14,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Flatten Directory Structure
+      - name: Fix Directory Structure Forcefully
         run: |
-          if [ -d "sultan-pharma-app" ]; then
+          echo "Current directory structure:"
+          ls -la
+          if [ -d "sultan-pharma-app/sultan-pharma-app" ]; then
+            echo "Found nested directory, flattening..."
+            cp -r sultan-pharma-app/sultan-pharma-app/* .
+            rm -rf sultan-pharma-app/sultan-pharma-app
+          elif [ -d "sultan-pharma-app" ]; then
+            echo "Moving contents from sultan-pharma-app to root..."
             shopt -s dotglob
             mv sultan-pharma-app/* .
             rmdir sultan-pharma-app
           fi
+          echo "Directory structure after fix:"
+          ls -la
 
       - name: Set up Java
         uses: actions/setup-java@v3
