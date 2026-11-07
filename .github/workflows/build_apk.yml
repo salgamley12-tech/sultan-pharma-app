@@ -14,6 +14,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Flatten Directory Structure
+        run: |
+          if [ -d "sultan-pharma-app" ]; then
+            shopt -s dotglob
+            mv sultan-pharma-app/* .
+            rmdir sultan-pharma-app
+          fi
+
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
@@ -28,20 +36,14 @@ jobs:
           cache: true
 
       - name: Install Dependencies
-        run: |
-          if [ -d "sultan-pharma-app" ]; then cd sultan-pharma-app; fi
-          flutter pub get
+        run: flutter pub get
 
       - name: Build APK
-        run: |
-          if [ -d "sultan-pharma-app" ]; then cd sultan-pharma-app; fi
-          flutter build apk --release
+        run: flutter build apk --release
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: sultan-pharma-release
-          path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            sultan-pharma-app/build/app/outputs/flutter-apk/app-release.apk
-            
+          path: build/app/outputs/flutter-apk/app-release.apk
+          
