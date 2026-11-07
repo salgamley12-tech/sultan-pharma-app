@@ -28,16 +28,20 @@ jobs:
           cache: true
 
       - name: Install Dependencies
-        run: flutter pub get
-        working-directory: sultan-pharma-app
+        run: |
+          if [ -d "sultan-pharma-app" ]; then cd sultan-pharma-app; fi
+          flutter pub get
 
       - name: Build APK
-        run: flutter build apk --release
-        working-directory: sultan-pharma-app
+        run: |
+          if [ -d "sultan-pharma-app" ]; then cd sultan-pharma-app; fi
+          flutter build apk --release
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: sultan-pharma-release
-          path: sultan-pharma-app/build/app/outputs/flutter-apk/app-release.apk
-          
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            sultan-pharma-app/build/app/outputs/flutter-apk/app-release.apk
+            
