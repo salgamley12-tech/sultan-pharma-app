@@ -41,4 +41,3 @@ jobs:
           name: sultan-pharma-release
           path: sultan-pharma-app/build/app/outputs/flutter-apk/app-release.apk
           
-
